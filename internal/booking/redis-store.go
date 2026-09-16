@@ -49,13 +49,13 @@ func (s *RedisStore) ListBookings(movieId string) []Booking {
 		if err != nil {
 			continue
 		}
+		session, err := parseSession(val)
+		if err != nil {
+			continue
+		}
+		sessions = append(sessions, session)
 	}
 
-	session, err := parseSession(val)
-	if err != nil {
-		continue
-	}
-	sessions = append(sessions, sesion)
 
 	return sessions
 }
@@ -98,10 +98,10 @@ func parseSession(val string) (Booking, error) {
 	}
 
 	return Booking{
-		ID:      data.Id,
+		ID:      data.ID,
 		MovieId: data.MovieId,
 		SeatId:  data.SeatId,
 		UserId:  data.UserId,
 		Status:  data.Status,
-	}
+	}, nil
 }
